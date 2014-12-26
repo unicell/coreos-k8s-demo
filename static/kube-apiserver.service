@@ -1,0 +1,18 @@
+[Unit]
+After=etcd.service
+ConditionFileIsExecutable=/opt/bin/kube-apiserver
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+Wants=etcd.service
+
+[Service]
+ExecStart=/opt/bin/kube-apiserver \
+--address=0.0.0.0 \
+--port=8080 \
+--etcd_servers=http://127.0.0.1:4001 \
+--machines=${MACHINES} \
+--logtostderr=true
+Restart=always
+RestartSec=10
+[Install]
+WantedBy=multi-user.target
