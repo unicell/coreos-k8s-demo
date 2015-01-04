@@ -14,6 +14,8 @@ Also using [Fabric](http://www.fabfile.org/) for Kubernetes deployment.
 
 ## build binaries
 
+    $ git clone https://github.com/unicell/coreos-k8s-demo.git
+    $ cd coreos-k8s-demo
     $ ./build_flannel.sh
     $ ./build_k8s_binaries.sh
 
@@ -25,6 +27,7 @@ binaries in previous step, and configure systemd services for Kubernetes.
 The number of nodes can be configured in bootstrap.sh, and the first node will
 be named as tcore01 and selected as master by default.
 
+    $ cd coreos-k8s-demo
     $ ./bootstrap.sh
 
 ## ready to use
