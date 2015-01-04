@@ -24,7 +24,9 @@ Also using [Fabric](http://www.fabfile.org/) for Kubernetes deployment.
 Run following command will create 2 nodes on Digital Ocean, upload prebuilt
 binaries in previous step, and configure systemd services for Kubernetes.
 
-The number of nodes can be configured in bootstrap.sh, and the first node will
+You will need to update ssh key settings to your own in create_droplet.sh.
+Region, image, size can also be configured in the same file.  The number of
+nodes can be configured in bootstrap.sh, and the first node will
 be named as tcore01 and selected as master by default.
 
     $ cd coreos-k8s-demo
