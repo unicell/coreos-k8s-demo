@@ -2,10 +2,15 @@
 
 ## environment dependencies
 
-This script uses [jq](stedolan.github.io/jq/) to parse JSON data from Digital
-Ocean's API response. If not yet installed, please run following command.
+Scripts in this repo use [jq](stedolan.github.io/jq/) to parse JSON data from
+Digital Ocean's API response. If not yet installed, please run following
+command.
 
     $ cd ~/bin && wget http://stedolan.github.io/jq/download/linux64/jq && chmod a+x jq
+
+Also using [Fabric](http://www.fabfile.org/) for Kubernetes deployment.
+
+    $ sudo pip install Fabric
 
 ## build binaries
 
