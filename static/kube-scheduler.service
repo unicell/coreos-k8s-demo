@@ -1,7 +1,7 @@
 [Unit]
-Description=Kubernetes Controller Manager
+Description=Kubernetes Scheduler
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-ConditionFileIsExecutable=/opt/bin/kube-controller-manager
+ConditionFileIsExecutable=/opt/bin/kube-scheduler
 Requires=etcd.service
 Requires=docker.service
 Requires=kube-apiserver.service
@@ -10,7 +10,7 @@ After=docker.service
 After=kube-apiserver.service
 
 [Service]
-ExecStart=/opt/bin/kube-controller-manager --master=127.0.0.1:8080 --machines=${MACHINES} --logtostderr=true
+ExecStart=/opt/bin/kube-scheduler --master=127.0.0.1:8080 --logtostderr=true
 Restart=on-failure
 RestartSec=5
 

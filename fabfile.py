@@ -1,6 +1,7 @@
 from fabric.api import *
 from fabric.decorators import task
 from fabric.tasks import Task
+from fabric.contrib.project import upload_project
 
 from paramiko import Transport
 from socket import getdefaulttimeout, setdefaulttimeout
@@ -34,22 +35,14 @@ def set_hosts(hostfile='allhosts'):
 
     env.hosts = remote_servers
 
-@task(task_class=SkipIfOfflineTask)
-def bootstrap():
-    """ init world """
-
-    with settings(warn_only=True):
-        run("docker pull tomlanyon/flannel-install >/dev/null 2>&1")
-        run("docker run --rm -v /opt/bin:/host tomlanyon/flannel-install")
-
-@task(task_class=SkipIfOfflineTask)
+@task
 def deploy_binaries():
     """ deploy pre-built executables """
     sudo('mkdir -p /opt/bin')
-    put('./bin/*', '/opt/bin', use_sudo=True, mirror_local_mode=True)
+    upload_project(local_dir='./bin', remote_dir='/opt', use_sudo=True)
     put('./scripts/*', '/opt/bin', use_sudo=True, mirror_local_mode=True)
 
-@task(task_class=SkipIfOfflineTask)
+@task
 def deploy_common_services():
     """ deploy common service files """
     put('./minion/*', '/etc/systemd/system', use_sudo=True)
@@ -79,12 +72,14 @@ def deploy_minion():
 def deploy_master():
     """ deploy master node """
     put('./master/*', '/etc/systemd/system', use_sudo=True)
-    sudo('/opt/bin/substitute_machines.sh /etc/systemd/system/kube-apiserver.service')
+    sudo('/opt/bin/substitute_machines.sh /etc/systemd/system/kube-controller-manager.service')
 
     sudo('systemctl enable /etc/systemd/system/kube-apiserver.service')
     sudo('systemctl enable /etc/systemd/system/kube-controller-manager.service')
+    sudo('systemctl enable /etc/systemd/system/kube-scheduler.service')
 
     sudo('systemctl daemon-reload')
 
     sudo('systemctl start kube-apiserver')
     sudo('systemctl start kube-controller-manager')
+    sudo('systemctl start kube-scheduler')
