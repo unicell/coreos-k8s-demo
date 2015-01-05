@@ -2,7 +2,10 @@
 set -x
 . environments
 
-NUM_OF_DROPLETS=2
+if [ -z "$NUM_OF_DROPLETS" ]; then
+    NUM_OF_DROPLETS=2
+fi  
+
 NAME_PREFIX=tcore0
 
 for i in `seq $NUM_OF_DROPLETS`; do ./create_droplet.sh $NAME_PREFIX$i; done
@@ -25,7 +28,7 @@ done
 :> ~/.fleetctl/known_hosts
 for h in `cat allhosts`; do ssh-keygen -f "$HOME/.ssh/known_hosts" -R $h; done
 
-# wait another 2 minutes to make sure Droplets able to be sshed
+# wait some time to make sure Droplets internally ready
 sleep 120
 fab set_hosts deploy_minion
 fab -H `head -1 allhosts` deploy_master

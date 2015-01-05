@@ -19,10 +19,14 @@ Also using [Fabric](http://www.fabfile.org/) for Kubernetes deployment.
     $ ./build_flannel.sh
     $ ./build_k8s_binaries.sh
 
-## start CoreOS cluster (2 nodes) and deploy Kubernetes
+## start CoreOS cluster and deploy Kubernetes
 
-Run following command will create 2 nodes on Digital Ocean, upload prebuilt
-binaries in previous step, and configure systemd services for Kubernetes.
+Run following bootstrap.sh script will create 2 nodes cluster by default on
+Digital Ocean, upload prebuilt binaries in previous step, and configure systemd
+services for Kubernetes. Use following env variable to control number of nodes
+to be created.
+
+    $ export NUM_OF_DROPLETS=<number of nodes>
 
 You will need to update ssh key settings to your own in create_droplet.sh.
 Region, image, size can also be configured in the same file.  The number of
